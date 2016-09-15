@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="charset" content="utf8" />
+		<title>Demo for leaflet-jquery</title>
+	</head>
+	<body>
+		<main>
+			<h1>Leaflet for jQuery</h1>
+			<div class="map" data-lat="" data-long=""></div>
+			<div class="map" data-lat="" data-long=""></div>
+			<p>You can use the leaflet-jquery plugin by following these steps:</p>
+			<ol>
+				<li>Make sure jQuery is embedded</li>
+				<li>Include the leaflet.js library</li>
+				<li>Include the leaflet-jquery plugin</li>
+				<li>Call the plugin</li>
+			</ol>
+		</main>
+		<script src="jquery.js"></script>
+		<script src="leaflet.js"></script>
+		<script src="jquery.leaflet.js"></script>
+		<script>
+			$(".map").leaflet();
+		</script>
+	</body>
+</html>
