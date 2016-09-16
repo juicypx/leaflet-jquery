@@ -3,23 +3,30 @@
 	<head>
 		<meta name="charset" content="utf8" />
 		<title>Demo for leaflet-jquery</title>
+		<link rel="stylesheet" href="leaflet/leaflet.css" />
+		<style>
+		.map {
+			height: 25em;
+			margin: 3em 0;
+		}
+		</style>
 	</head>
 	<body>
 		<main>
 			<h1>Leaflet for jQuery</h1>
-			<div class="map" data-lat="" data-long=""></div>
-			<div class="map" data-lat="" data-long=""></div>
+			<div class="map" id="simple-map" data-lat="52.51632" data-long="13.37823"></div>
+			<div class="map" id="extended-map" data-lat="52.51632" data-long="13.37823" data-zoom="10" data-controls="scale zoom"></div>
 			<p>You can use the leaflet-jquery plugin by following these steps:</p>
 			<ol>
-				<li>Make sure jQuery is embedded</li>
-				<li>Include the leaflet.js library</li>
-				<li>Include the leaflet-jquery plugin</li>
+				<li>Include <a href="https://jquery.com">jQuery</a></li>
+				<li>Include the <a href="http://leafletjs.com">Leaflet</a> library</li>
+				<li>Include the leaflet-jquery plugin (<code>jquery.leaflet.js</code>)</li>
 				<li>Call the plugin</li>
 			</ol>
 		</main>
-		<script src="jquery.js"></script>
-		<script src="leaflet.js"></script>
-		<script src="jquery.leaflet.js"></script>
+		<script src="jquery/jquery-3.1.0.js"></script>
+		<script src="leaflet/leaflet-src.js"></script>
+		<script src="../src/jquery.leaflet.js"></script>
 		<script>
 			$(".map").leaflet();
 		</script>
