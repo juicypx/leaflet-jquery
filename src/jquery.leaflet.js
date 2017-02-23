@@ -1,5 +1,6 @@
 (function($) {
 $.fn.leaflet = function(options) {
+	var omit = require('lodash.omit');
 	var settings = $.extend({}, { // TODO extend leaflet options, calculate attribute name from the leaflet option name
 		attributeLatitude: "data-lat",
 		attributeLongitude: "data-long",
@@ -9,15 +10,15 @@ $.fn.leaflet = function(options) {
 		attributeTileLayers: "data-tilelayers",
 		attributeControls: "data-controls",
 		tileLayers: [{
-				source: "",
-				attribution: ""
+				source: "http://{s}.tile.osm.org/{z}/{x}/{y}.png",
+				attribution: "&copy; <a href=\"http://osm.org/copyright\">OpenStreetMap</a> contributors"
 			},
 		],
 		controls: [{
 
 		}], // TODO implement: iterate through this, if it's an object, "name" is member name and other components are options, if it's a string it's the member name. for each control, parse data-:name-:option attributes
 		zoom: 18,
-		imagePath: "images/maps"
+		imagePath: "leaflet/images"
 	}, options);
 
 	return this.each(function() {
@@ -28,11 +29,14 @@ $.fn.leaflet = function(options) {
 
 		var map = L.map(this).setView([lat, long], zoom);
 
-		L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
-			attribution: "&copy; <a href=\"http://osm.org/copyright\">OpenStreetMap</a> contributors"
-		}).addTo(map);
+		settings.tileLayers.forEach(function(tileLayer) {
+			var tileLayerOptions = omit(tileLayer, "source");
+			L.tileLayer(tileLayer.source, {
+				attribution: tileLayer.attribution
+			}).addTo(map);
+		});
 
-		L.Icon.Default.imagePath = "leaflet/images";
+		L.Icon.Default.imagePath = settings.imagePath;
 		L.marker([lat, long]).addTo(map);
 		L.control.scale().addTo(map);
 	});
