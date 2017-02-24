@@ -31,9 +31,7 @@ $.fn.leaflet = function(options) {
 
 		settings.tileLayers.forEach(function(tileLayer) {
 			var tileLayerOptions = omit(tileLayer, "source");
-			L.tileLayer(tileLayer.source, {
-				attribution: tileLayer.attribution
-			}).addTo(map);
+			L.tileLayer(tileLayer.source, tileLayerOptions).addTo(map);
 		});
 
 		L.Icon.Default.imagePath = settings.imagePath;
