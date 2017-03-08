@@ -1,0 +1,33 @@
+{
+  "name": "leaflet-jquery",
+  "version": "1.0.0",
+  "description": "A wrapper for using the Leaflet map library with jQuery.",
+  "main": "jquery.leaflet.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nkrl/leaflet-jquery.git"
+  },
+  "author": "nkrl",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nkrl/leaflet-jquery/issues"
+  },
+  "homepage": "https://github.com/nkrl/leaflet-jquery#readme",
+  "dependencies": {
+    "lodash.omit": "^4.5.0"
+  },
+  "devDependencies": {
+    "browserify": "^14.1.0",
+    "gulp": "^3.9.1",
+    "gulp-jslint": "^1.0.10",
+    "gulp-plumber": "^1.1.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^2.0.1",
+    "gulp-util": "^3.0.8",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0"
+  }
+}
