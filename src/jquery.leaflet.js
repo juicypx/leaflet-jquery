@@ -12,7 +12,7 @@ $.fn.leaflet = function(options) {
 		tileLayers: [{
 				source: "http://{s}.tile.osm.org/{z}/{x}/{y}.png",
 				attribution: "&copy; <a href=\"http://osm.org/copyright\">OpenStreetMap</a> contributors"
-			},
+			}
 		],
 		controls: [], // TODO implement: iterate through this, if it's an object, "name" is member name and other components are options, if it's a string it's the member name. for each control, parse data-:name-:option attributes
 		zoom: 18,
@@ -20,6 +20,33 @@ $.fn.leaflet = function(options) {
 	}, options);
 
 	return this.each(function() {
+		var that = $(this);
+
+		function option(attribute, value) {
+			return that.attr(attribute) || value;
+		}
+
+		function requiredOption(attribute) {
+			return that.attr(attribute) || "error"; // TODO throw error
+		}
+
+	  /**
+		 * Loads multiple objects each consisting of a name and several properties.
+		 * Objects are loaded from an HTML attribute containing the
+		 * space-separated list of object names and multiple separate HTML attributes
+		 * containing each of the properties of the complex object.
+		 */
+		function complexOption(attribute, defaultValue) {
+			var value = that.attr(attribute);
+			var objectNames = value.split(" ");
+			objectNames.forEach(function(object) {
+				that.attr("data-" + object + "-*");
+				// TODO get all attributes that follow the pattern, extend jQuery with $().attrs(pattern) for this, https://github.com/isaacs/minimatch https://www.npmjs.com/package/matcher
+				// TODO http://stackoverflow.com/questions/14645806/get-all-attributes-of-an-element-using-jquery (2nd answer)
+			});
+			// TODO if this contains "inherit", merge it with options instead of replacing
+		}
+
 		var lat = $(this).attr(settings.attributeLatitude); // TODO if this attribute doesn't exist, look for this attribute at parent elements for ease of use
 		var long = $(this).attr(settings.attributeLongitude);
 		var zoom = $(this).attr(settings.attributeZoom) || settings.zoom;
