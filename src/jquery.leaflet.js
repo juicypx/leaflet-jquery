@@ -27,7 +27,11 @@ $.fn.leaflet = function(options) {
 		}
 
 		function requiredOption(attribute) {
-			return that.attr(attribute) || "error"; // TODO throw error
+			var value = that.attr(attribute);
+			if (value === undefined) {
+				throw new Error("The required option \"" + attribute + "\" is missing");
+			}
+			return value;
 		}
 
 	  /**
