@@ -9,6 +9,10 @@ $.fn.leaflet = function(options) {
 		attributeMaxZoom: "data-maxzoom",
 		attributeTileLayers: "data-tilelayers",
 		attributeControls: "data-controls",
+		attributes: {
+			latitude: "data-lat",
+			longitude: "data-long"
+		},
 		tileLayers: [{
 				source: "http://{s}.tile.osm.org/{z}/{x}/{y}.png",
 				attribution: "&copy; <a href=\"http://osm.org/copyright\">OpenStreetMap</a> contributors"
@@ -21,6 +25,12 @@ $.fn.leaflet = function(options) {
 
 	return this.each(function() {
 		var that = $(this);
+
+		function attribute(name) {
+			// lookup in attributes map
+			// append "data-"
+			// to lowercase
+		}
 
 		function option(attribute, value) {
 			return that.attr(attribute) || value;
@@ -51,10 +61,9 @@ $.fn.leaflet = function(options) {
 			// TODO if this contains "inherit", merge it with options instead of replacing
 		}
 
-		var lat = $(this).attr(settings.attributeLatitude); // TODO if this attribute doesn't exist, look for this attribute at parent elements for ease of use
-		var long = $(this).attr(settings.attributeLongitude);
-		var zoom = $(this).attr(settings.attributeZoom) || settings.zoom;
-		// TODO refactor to option("data-zoom", settings.zoom); requiredOption(settings.attributeLatitude); the latter should throw an error if missing
+		var lat = requiredOption(settings.attributeLatitude); // TODO if this attribute doesn't exist, look for this attribute at parent elements for ease of use
+		var long = requiredOption(settings.attributeLongitude);
+		var zoom = option(settings.attributeZoom, settings.zoom);
 
 		var map = L.map(this).setView([lat, long], zoom);
 
