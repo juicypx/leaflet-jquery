@@ -27,9 +27,10 @@ $.fn.leaflet = function(options) {
 		var that = $(this);
 
 		function attribute(name) {
-			// lookup in attributes map
-			// append "data-"
-			// to lowercase
+			if (name in options.attributes) {
+				return options.attributes[name];
+			}
+			return "data-" + name.toLowerCase();
 		}
 
 		function option(attribute, value) {
