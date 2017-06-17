@@ -33,8 +33,12 @@ $.fn.leaflet = function(options) {
 			return "data-" + name.toLowerCase();
 		}
 
-		function option(attribute, value) {
-			return that.attr(attribute) || value;
+		function option(property) {
+			var value = that.attr(attribute(property));
+			if (value === undefined) {
+				value = settings[property];
+			}
+			return value;
 		}
 
 		function requiredOption(attribute) {
