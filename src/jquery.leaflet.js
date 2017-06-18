@@ -27,8 +27,8 @@ $.fn.leaflet = function(options) {
 		var that = $(this);
 
 		function attribute(name) {
-			if (name in options.attributes) {
-				return options.attributes[name];
+			if (name in settings.attributes) {
+				return settings.attributes[name];
 			}
 			return "data-" + name.toLowerCase();
 		}
@@ -41,8 +41,8 @@ $.fn.leaflet = function(options) {
 			return value;
 		}
 
-		function requiredOption(attribute) {
-			var value = that.attr(attribute);
+		function requiredOption(property) {
+			var value = that.attr(attribute(property));
 			if (value === undefined) {
 				throw new Error("The required option \"" + attribute + "\" is missing");
 			}
@@ -55,8 +55,8 @@ $.fn.leaflet = function(options) {
 		 * space-separated list of object names and multiple separate HTML attributes
 		 * containing each of the properties of the complex object.
 		 */
-		function complexOption(attribute, defaultValue) {
-			var value = that.attr(attribute);
+		function complexOption(property, defaultValue) {
+			var value = that.attr(attribute(property));
 			var objectNames = value.split(" ");
 			objectNames.forEach(function(object) {
 				that.attr("data-" + object + "-*");
@@ -66,9 +66,9 @@ $.fn.leaflet = function(options) {
 			// TODO if this contains "inherit", merge it with options instead of replacing
 		}
 
-		var lat = requiredOption(settings.attributeLatitude); // TODO if this attribute doesn't exist, look for this attribute at parent elements for ease of use
-		var long = requiredOption(settings.attributeLongitude);
-		var zoom = option(settings.attributeZoom, settings.zoom);
+		var lat = requiredOption("latitude"); // TODO if this attribute doesn't exist, look for this attribute at parent elements for ease of use
+		var long = requiredOption("longitude");
+		var zoom = option("zoom");
 
 		var map = L.map(this).setView([lat, long], zoom);
 
