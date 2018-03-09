@@ -28,7 +28,7 @@ $.fn.leaflet = function(options) {
 		var that = $(this);
 
 		function attribute(name) {
-			if (name in settings.attributes) {
+			if (name in settings.attributes && settings.attributes !== undefined) {
 				return settings.attributes[name];
 			}
 			return "data-" + name.toLowerCase();
