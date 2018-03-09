@@ -19,6 +19,7 @@ var assumedVariables = ['require', 'jQuery', 'L'];
 
 gulp.task('lint', function() {
   return gulp.src(paths.input)
+    .on('error', util.log)
     .pipe(plumber())
     .pipe(jslint({
       predef: assumedVariables,
@@ -33,13 +34,13 @@ gulp.task('lint', function() {
 gulp.task('build', function() {
   return browserify(paths.input)
     .bundle()
+    .on('error', util.log)
     .pipe(source(paths.output.file))
     .pipe(buffer())
     .pipe(gulp.dest(paths.output.directory))
     .pipe(uglify())
     .pipe(rename({ suffix: '.min' }))
-    .pipe(gulp.dest(paths.output.directory))
-    .on('error', util.log);
+    .pipe(gulp.dest(paths.output.directory));
 });
 
 gulp.task('watch', function() {
