@@ -56,7 +56,7 @@ $.fn.leaflet = function(options) {
 		 * space-separated list of object names and multiple separate HTML attributes
 		 * containing each of the properties of the complex object.
 		 */
-		function complexOption(property, defaultValue) {
+		function complexOption(property) {
 			/**
 			 * Retrieve all attributes from a HTML node
 			 */
@@ -69,6 +69,9 @@ $.fn.leaflet = function(options) {
 			var value = that.attr(attribute(property));
 			var objectNames = value.split(" ");
 			objectNames.forEach(function(objectName) {
+				if (objectName == "inherit") {
+					return;
+				}
 				var attributes = htmlAllAttributes(that);
 				$.each(attributes, function(attribute, value) {
 					if (attribute.startsWith("data-" + objectName + "-")) {
@@ -81,8 +84,12 @@ $.fn.leaflet = function(options) {
 				// TODO get all attributes that follow the pattern, extend jQuery with $().attrs(pattern) for this, https://github.com/isaacs/minimatch https://www.npmjs.com/package/matcher
 				// TODO http://stackoverflow.com/questions/14645806/get-all-attributes-of-an-element-using-jquery (2nd answer)
 			});
-			return objects;
-			// TODO if this contains "inherit", merge it with options instead of replacing
+			if (objectNames.includes("inherit")) {
+				return objects.concat(settings.controls);
+			}
+			else {
+				return objects;
+			}
 		}
 
 		var lat = requiredOption("latitude"); // TODO if this attribute doesn't exist, look for this attribute at parent elements for ease of use
@@ -98,7 +105,7 @@ $.fn.leaflet = function(options) {
 
 		L.Icon.Default.imagePath = settings.imagePath;
 		L.marker([lat, long]).addTo(map);
-		settings.controls.forEach(function(control) { // complexOption(controls).forEach(...)
+		complexOption("controls").forEach(function(control) {
 			L.control[control]().addTo(map);
 		});
 	});
