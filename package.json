@@ -17,7 +17,8 @@
   },
   "homepage": "https://github.com/nkrl/leaflet-jquery#readme",
   "dependencies": {
-    "lodash.omit": "^4.5.0"
+    "lodash.omit": "^4.5.0",
+    "lodash.transform": "^4.6.0"
   },
   "devDependencies": {
     "browserify": "^14.1.0",

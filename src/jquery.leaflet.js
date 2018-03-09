@@ -1,6 +1,7 @@
 (function($) {
 $.fn.leaflet = function(options) {
 	var omit = require('lodash.omit');
+	var transform = require('lodash.transform');
 	var settings = $.extend({}, { // TODO extend leaflet options, calculate attribute name from the leaflet option name
 		attributeLatitude: "data-lat",
 		attributeLongitude: "data-long",
@@ -56,13 +57,31 @@ $.fn.leaflet = function(options) {
 		 * containing each of the properties of the complex object.
 		 */
 		function complexOption(property, defaultValue) {
+			/**
+			 * Retrieve all attributes from a HTML node
+			 */
+			function htmlAllAttributes(node) {
+				return transform(node.attributes, function(attrs, attribute) {
+		        attrs[attribute.name] = attribute.value;
+		    }, {});
+			}
+			var objects = [];
 			var value = that.attr(attribute(property));
 			var objectNames = value.split(" ");
-			objectNames.forEach(function(object) {
-				that.attr("data-" + object + "-*");
+			objectNames.forEach(function(objectName) {
+				var attributes = htmlAllAttributes(that);
+				$.each(attributes, function(attribute, value) {
+					if (attribute.startsWith("data-" + objectName + "-")) {
+						var key = attribute.match(new RegExp("data-" + objectName + "-(.*)"))[0];
+						var object = {};
+						object[key] = value;
+						objects.push(object);
+					}
+				});
 				// TODO get all attributes that follow the pattern, extend jQuery with $().attrs(pattern) for this, https://github.com/isaacs/minimatch https://www.npmjs.com/package/matcher
 				// TODO http://stackoverflow.com/questions/14645806/get-all-attributes-of-an-element-using-jquery (2nd answer)
 			});
+			return objects;
 			// TODO if this contains "inherit", merge it with options instead of replacing
 		}
 
@@ -79,7 +98,7 @@ $.fn.leaflet = function(options) {
 
 		L.Icon.Default.imagePath = settings.imagePath;
 		L.marker([lat, long]).addTo(map);
-		settings.controls.forEach(function(control) {
+		settings.controls.forEach(function(control) { // complexOption(controls).forEach(...)
 			L.control[control]().addTo(map);
 		});
 	});
