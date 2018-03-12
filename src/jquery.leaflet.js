@@ -106,7 +106,13 @@ $.fn.leaflet = function(options) {
 		L.Icon.Default.imagePath = settings.imagePath;
 		L.marker([lat, long]).addTo(map);
 		complexOption("controls").forEach(function(control) {
-			L.control[control]().addTo(map);
+			var controlName = control;
+			var controlOptions = {};
+			if (typeof control === "object") {
+				controlName = control.name;
+				controlOptions = omit(control, "name");
+			}
+			L.control[controlName](controlOptions).addTo(map);
 		});
 	});
 	// TODO make marker and controls separate method to chain after map
