@@ -67,7 +67,10 @@ $.fn.leaflet = function(options) {
 			}
 			var objects = [];
 			var value = that.attr(attribute(property));
-			var objectNames = value.split(" ");
+			var objectNames = [];
+			if (value !== undefined) {
+				objectNames = value.split(" ");
+			}
 			objectNames.forEach(function(objectName) {
 				if (objectName == "inherit") {
 					return;
