@@ -27,15 +27,28 @@ $.fn.leaflet = function(options) {
 	return this.each(function() {
 		var that = $(this);
 
-		function attribute(name) {
+		/**
+		 * Retrieve all attributes from a HTML node
+		 */
+		function allAttributes(node) {
+			return transform(node.attributes, function(attrs, attribute) {
+					attrs[attribute.name] = attribute.value;
+			}, {});
+		}
+
+		function attributeName(name) {
 			if (name in settings.attributes && settings.attributes[name] !== undefined) {
 				return settings.attributes[name];
 			}
 			return "data-" + name.toLowerCase();
 		}
 
+		function attribute(property) {
+			return that.attr(attributeName(property));
+		}
+
 		function option(property) {
-			var value = that.attr(attribute(property));
+			var value = attribute(property);
 			if (value === undefined) {
 				value = settings[property];
 			}
@@ -43,7 +56,7 @@ $.fn.leaflet = function(options) {
 		}
 
 		function requiredOption(property) {
-			var value = that.attr(attribute(property));
+			var value = attribute(property);
 			if (value === undefined) {
 				throw new Error("The required option \"" + attribute + "\" is missing");
 			}
@@ -57,16 +70,8 @@ $.fn.leaflet = function(options) {
 		 * containing each of the properties of the complex object.
 		 */
 		function complexOption(property) {
-			/**
-			 * Retrieve all attributes from a HTML node
-			 */
-			function htmlAllAttributes(node) {
-				return transform(node.attributes, function(attrs, attribute) {
-		        attrs[attribute.name] = attribute.value;
-		    }, {});
-			}
 			var objects = [];
-			var value = that.attr(attribute(property));
+			var value = attribute(property);
 			var objectNames = [];
 			if (value !== undefined) {
 				objectNames = value.split(" ");
@@ -75,7 +80,7 @@ $.fn.leaflet = function(options) {
 				if (objectName == "inherit") {
 					return;
 				}
-				var attributes = htmlAllAttributes(that);
+				var attributes = allAttributes(that);
 				$.each(attributes, function(attribute, value) {
 					if (attribute.startsWith("data-" + objectName + "-")) {
 						var key = attribute.match(new RegExp("data-" + objectName + "-(.*)"))[0];
