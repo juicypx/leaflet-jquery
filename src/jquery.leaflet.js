@@ -36,17 +36,30 @@ $.fn.leaflet = function(options) {
 			}, {});
 		}
 
-		function attributeName(name) {
-			if (name in settings.attributes && settings.attributes[name] !== undefined) {
-				return settings.attributes[name];
+		/**
+		 * Retrieves the HTML attribute name for a property. By default, the attribute name
+		 * consists of the prefix 'data-', marking it as a data attribute, and the
+		 * property name in lowercase. Alternative names can be specified with the
+		 * option 'attributes'.
+		 */
+		function attributeName(property) {
+			if (property in settings.attributes && settings.attributes[property] !== undefined) {
+				return settings.attributes[property];
 			}
-			return "data-" + name.toLowerCase();
+			return "data-" + property.toLowerCase();
 		}
 
+		/**
+		 * Reads the HTML attribute for a property. Returns 'undefined' if absent.
+		 */
 		function attribute(property) {
 			return that.attr(attributeName(property));
 		}
 
+		/**
+		 * Reads an option which can be specified as a HTML attribute or passed as
+		 * an argument. Returns 'undefined' if the option is absent.
+		 */
 		function option(property) {
 			var value = attribute(property);
 			if (value === undefined) {
@@ -55,6 +68,10 @@ $.fn.leaflet = function(options) {
 			return value;
 		}
 
+		/**
+		 * Reads a required option. The option must be specified either as HTML
+		 * attribute or as an argument, otherwise this function throws an error.
+		 */
 		function requiredOption(property) {
 			var value = attribute(property);
 			if (value === undefined) {
