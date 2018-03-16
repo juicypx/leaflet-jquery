@@ -110,7 +110,9 @@ $.fn.leaflet = function(options) {
 							object = existingObject;
 						}
 						object[key] = this.value;
-						objects.push(object);
+						if (existingObject === undefined) {
+							objects.push(object);
+						}
 						complex = true;
 					}
 				});
