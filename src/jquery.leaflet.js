@@ -24,16 +24,16 @@ $.fn.leaflet = function(options) {
 		imagePath: "leaflet/images"
 	}, options);
 
-	return this.each(function() {
+	return this.each(function(index, element) {
 		var that = $(this);
 
 		/**
 		 * Retrieve all attributes from a HTML node
 		 */
 		function allAttributes(node) {
-			return transform(node.attributes, function(attrs, attribute) {
+			/*return transform(node.attributes, function(attrs, attribute) {
 					attrs[attribute.name] = attribute.value;
-			}, {});
+			}, {});*/
 		}
 
 		/**
@@ -97,20 +97,32 @@ $.fn.leaflet = function(options) {
 				if (objectName == "inherit") {
 					return;
 				}
-				var attributes = allAttributes(that);
-				$.each(attributes, function(attribute, value) {
-					if (attribute.startsWith("data-" + objectName + "-")) {
-						var key = attribute.match(new RegExp("data-" + objectName + "-(.*)"))[0];
+
+				var complex = false;
+				$.each(element.attributes, function() {
+					if (this.name.startsWith("data-" + objectName + "-")) {
+						var key = this.name.match(new RegExp("data-" + objectName + "-(.*)"))[0];
 						var object = {};
-						object[key] = value;
+						var existingObject = objects.find(function(existingObject) {
+							return existingObject.name == objectName;
+						});
+						if (existingObject !== undefined) {
+							object = existingObject;
+						}
+						object[key] = this.value;
 						objects.push(object);
+						complex = true;
 					}
 				});
+				if (!complex) {
+					objects.push(objectName);
+				}
 				// TODO get all attributes that follow the pattern, extend jQuery with $().attrs(pattern) for this, https://github.com/isaacs/minimatch https://www.npmjs.com/package/matcher
 				// TODO http://stackoverflow.com/questions/14645806/get-all-attributes-of-an-element-using-jquery (2nd answer)
 			});
+
 			if (objectNames.includes("inherit")) {
-				return objects.concat(settings.controls);
+				return objects.concat(settings[property]);
 			}
 			else {
 				return objects;
