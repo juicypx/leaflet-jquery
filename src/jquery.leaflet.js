@@ -1,7 +1,6 @@
 (function($) {
 $.fn.leaflet = function(options) {
 	var omit = require('lodash.omit');
-	var transform = require('lodash.transform');
 	var settings = $.extend({}, { // TODO extend leaflet options, calculate attribute name from the leaflet option name
 		attributeLatitude: "data-lat",
 		attributeLongitude: "data-long",
@@ -26,15 +25,6 @@ $.fn.leaflet = function(options) {
 
 	return this.each(function(index, element) {
 		var that = $(this);
-
-		/**
-		 * Retrieve all attributes from a HTML node
-		 */
-		function allAttributes(node) {
-			/*return transform(node.attributes, function(attrs, attribute) {
-					attrs[attribute.name] = attribute.value;
-			}, {});*/
-		}
 
 		/**
 		 * Retrieves the HTML attribute name for a property. By default, the attribute name
