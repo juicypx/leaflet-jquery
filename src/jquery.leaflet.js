@@ -124,8 +124,15 @@ $.fn.leaflet = function(options) {
 		var lat = requiredOption("latitude"); // TODO if this attribute doesn't exist, look for this attribute at parent elements for ease of use
 		var long = requiredOption("longitude");
 		var zoom = option("zoom");
+		var minZoom = option("minZoom");
+		var maxZoom = option("maxZoom");
 
-		var map = L.map(this).setView([lat, long], zoom);
+		var map = L.map(this, {
+			minZoom: minZoom,
+			maxZoom: maxZoom,
+			attributionControl: false,
+			zoomControl: false
+		}).setView([lat, long], zoom);
 
 		settings.tileLayers.forEach(function(tileLayer) {
 			var tileLayerOptions = omit(tileLayer, "source");
