@@ -24,8 +24,6 @@ $.fn.leaflet = function(options) {
 	}, options);
 
 	return this.each(function(index, element) {
-		var that = $(this);
-
 		/**
 		 * Retrieves the HTML attribute name for a property. By default, the attribute name
 		 * consists of the prefix 'data-', marking it as a data attribute, and the
@@ -43,7 +41,7 @@ $.fn.leaflet = function(options) {
 		 * Reads the HTML attribute for a property. Returns 'undefined' if absent.
 		 */
 		function attribute(property) {
-			return that.attr(attributeName(property));
+			return $(element).attr(attributeName(property));
 		}
 
 		/**
